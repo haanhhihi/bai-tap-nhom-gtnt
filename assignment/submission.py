@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 from pathlib import Path
 
 
@@ -49,9 +50,54 @@ def pagerank(
     Trả vector mới nhất theo thứ tự ids, không trả thống kê phụ.
     Báo ValueError nếu tham số hoặc phân phối dịch chuyển không hợp lệ.
     """
-    # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt pagerank")
+    # ---- (1) KIỂM TRA ĐẦU VÀO ----
+    n = len(ids)
+    if n == 0 or len(out_neighbors) != n:
+        raise ValueError("ids rỗng hoặc out_neighbors không cùng độ dài với ids")
+    if not (isinstance(beta, (int, float)) and 0 < beta < 1):
+        raise ValueError("beta phải thuộc (0, 1)")
+    if not (isinstance(tol, (int, float)) and tol > 0):
+        raise ValueError("tol phải > 0")
+    if not (isinstance(max_iter, int) and not isinstance(max_iter, bool) and max_iter >= 1):
+        raise ValueError("max_iter phải là số nguyên >= 1")
+    if teleport is None:
+        v = [1.0 / n] * n
+    else:
+        if len(teleport) != n:
+            raise ValueError("teleport sai kích thước")
+        if any((not math.isfinite(x)) or x < 0 for x in teleport):
+            raise ValueError("teleport có giá trị không hữu hạn hoặc âm")
+        if abs(sum(teleport) - 1.0) > 1e-12:
+            raise ValueError("tổng teleport lệch 1 quá 1e-12")
+        v = [float(x) for x in teleport]
 
+    # ---- (2) MỘT VÒNG CẬP NHẬT ----
+    def one_step(r: list[float]) -> list[float]:
+        new = [0.0] * n
+        dangling = 0.0                      
+        for j in range(n):
+            targets = out_neighbors[j]
+            if targets:
+                share = r[j] / len(targets)  
+                for i in targets:
+                    new[i] += share
+            else:
+                dangling += r[j]
+        base = beta * dangling / n           
+        for i in range(n):
+            new[i] = beta * new[i] + base + (1.0 - beta) * v[i]
+        return new
+
+    # ---- (3) VÒNG LẶP + ĐIỀU KIỆN DỪNG ----
+    r = v[:]                                 
+    for _ in range(max_iter):
+        r_new = one_step(r)
+        diff = sum(abs(a - b) for a, b in zip(r_new, r))
+        r = r_new
+        if diff <= tol:
+            break
+    return r
+    
 
 def topic_distribution(
     ids: list[str], categories_path: Path, prefix: str
