@@ -28,8 +28,47 @@ def load_graph(
     Nút cụt có danh sách đích rỗng. Không gắn cứng số đỉnh/cạnh.
     Báo ValueError nếu đồ thị rỗng hoặc cạnh chứa ID ngoài tập đỉnh.
     """
-    # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt load_graph")
+    # ---- (1) ĐỌC TẬP ĐỈNH TỪ ARTICLES.TSV ----
+    article_set: set[str] = set()
+    with articles_path.open(encoding="utf-8") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("\t")
+            article_id = parts[0].strip()
+            if article_id:
+                article_set.add(article_id)
+
+    if not article_set:
+        raise ValueError("Đồ thị rỗng: không tìm thấy đỉnh nào trong articles.tsv")
+
+    # Sắp xếp danh sách ID phân biệt theo thứ tự byte UTF-8
+    ids = sorted(article_set, key=lambda s: s.encode("utf-8"))
+    id_to_idx = {article_id: idx for idx, article_id in enumerate(ids)}
+
+    # ---- (2) ĐỌC DANH SÁCH CẠNH TỪ LINKS.TSV ----
+    neighbor_sets: list[set[int]] = [set() for _ in range(len(ids))]
+    with links_path.open(encoding="utf-8") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("\t")
+            if len(parts) < 2:
+                raise ValueError(f"Dòng cạnh không hợp lệ trong links.tsv: {line!r}")
+            src_id, dst_id = parts[0].strip(), parts[1].strip()
+            if src_id not in id_to_idx or dst_id not in id_to_idx:
+                raise ValueError(
+                    f"Cạnh chứa ID ngoài tập đỉnh: {src_id!r} -> {dst_id!r}"
+                )
+            src_idx = id_to_idx[src_id]
+            dst_idx = id_to_idx[dst_id]
+            neighbor_sets[src_idx].add(dst_idx)
+
+    # ---- (3) CHUYỂN TẬP KỀ THÀNH DANH SÁCH CHỈ SỐ ----
+    out_neighbors = [sorted(neighbors) for neighbors in neighbor_sets]
+    return ids, out_neighbors
 
 
 def pagerank(
@@ -113,8 +152,46 @@ def topic_distribution(
     trang còn lại nhận 0. Báo ValueError nếu tập chủ đề rỗng hoặc dữ liệu
     nhãn tham chiếu ID ngoài ids. Không dùng nội dung bài để suy ra nhãn.
     """
-    # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt topic_distribution")
+    # ---- (1) KIỂM TRA ĐẦU VÀO ----
+    n = len(ids)
+    if n == 0:
+        raise ValueError("Danh sách ids rỗng")
+    if not prefix:
+        raise ValueError("prefix không được rỗng")
+
+    id_to_idx = {article_id: idx for idx, article_id in enumerate(ids)}
+    sub_prefix = prefix + "."
+
+    # ---- (2) ĐỌC CATEGORIES.TSV VÀ LỌC ĐỈNH THUỘC CHỦ ĐỀ ----
+    matched_indices: set[int] = set()
+    with categories_path.open(encoding="utf-8") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("\t")
+            if len(parts) < 2:
+                raise ValueError(
+                    f"Dòng nhãn không hợp lệ trong categories.tsv: {line!r}"
+                )
+            article_id, category = parts[0].strip(), parts[1].strip()
+            if article_id not in id_to_idx:
+                raise ValueError(
+                    f"Dữ liệu nhãn tham chiếu ID ngoài tập đỉnh: {article_id!r}"
+                )
+            if category == prefix or category.startswith(sub_prefix):
+                matched_indices.add(id_to_idx[article_id])
+
+    # ---- (3) TẠO PHÂN PHỐI ĐỀU TRÊN TẬP CHỦ ĐỀ ----
+    topic_size = len(matched_indices)
+    if topic_size == 0:
+        raise ValueError(f"Tập chủ đề rỗng cho prefix: {prefix!r}")
+
+    prob = 1.0 / topic_size
+    teleport = [0.0] * n
+    for idx in matched_indices:
+        teleport[idx] = prob
+    return teleport
 
 
 def mix_pageranks(
@@ -210,8 +287,16 @@ def jaccard(set_a: set[str], set_b: set[str]) -> float:
     Trả kích thước giao chia kích thước hợp. Theo quy ước bài tập, hai tập
     rỗng trả 1.0; chỉ một tập rỗng trả 0.0. Không dùng tập mã băm thay thế.
     """
-    # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt jaccard")
+    # ---- (1) XỬ LÝ TRƯỜNG HỢP TẬP RỖNG ----
+    if not set_a and not set_b:
+        return 1.0
+    if not set_a or not set_b:
+        return 0.0
+
+    # ---- (2) TÍNH TỶ LỆ GIAO TRÊN HỢP ----
+    intersection_size = len(set_a & set_b)
+    union_size = len(set_a | set_b)
+    return intersection_size / union_size
 
 
 def signature_similarity(
