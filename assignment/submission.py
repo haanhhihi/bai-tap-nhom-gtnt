@@ -11,6 +11,8 @@ import argparse
 import csv
 import json
 import math
+import hashlib
+import re
 from pathlib import Path
 
 
@@ -131,6 +133,12 @@ def mix_pageranks(
     raise NotImplementedError("Chưa cài đặt mix_pageranks")
 
 
+_ASCII_UPPER_TO_LOWER = str.maketrans(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "abcdefghijklmnopqrstuvwxyz",
+)
+_ASCII_WHITESPACE_RE = re.compile(r"[ \t\n\r\v\f]+")
+
 def normalize_text(text: str) -> str:
     r"""Chuẩn hóa chuỗi Unicode theo đúng quy tắc của phần C.
 
@@ -141,7 +149,8 @@ def normalize_text(text: str) -> str:
     Trả chuỗi đã chuẩn hóa; chuỗi rỗng hoặc chỉ có khoảng trắng trên trả ''.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt normalize_text")
+    lowered = text.translate(_ASCII_UPPER_TO_LOWER)
+    return _ASCII_WHITESPACE_RE.sub(" ", lowered).strip(" ")
 
 
 def shingles(text: str, k: int) -> set[str]:
@@ -153,8 +162,11 @@ def shingles(text: str, k: int) -> set[str]:
     nguyên dương. Không chuẩn hóa văn bản thêm lần nữa trong hàm này.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt shingles")
-
+    if not isinstance(k, int) or isinstance(k, bool) or k <= 0:
+        raise ValueError("k phải là số nguyên dương")
+    if len(text) < k:
+        return set()
+    return {text[i : i + k] for i in range(len(text) - k + 1)}
 
 def shingle_id(shingle: str, p: int) -> int:
     """Ánh xạ một shingle thành số nguyên trong [0, p-1].
@@ -164,7 +176,11 @@ def shingle_id(shingle: str, p: int) -> int:
     Trả int tất định giữa các lần chạy. Báo ValueError nếu p <= 1.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt shingle_id")
+    if not isinstance(p, int) or isinstance(p, bool) or p <= 1:
+        raise ValueError("p phải là số nguyên lớn hơn 1")
+    digest = hashlib.sha256(shingle.encode("utf-8")).digest()
+    value = int.from_bytes(digest[:4], byteorder="big", signed=False)
+    return value % p
 
 
 def minhash(shingle_ids: set[int], hash_params: dict) -> list[int]:
@@ -178,7 +194,14 @@ def minhash(shingle_ids: set[int], hash_params: dict) -> list[int]:
     xác. Không sinh hệ số mới, không trả ID phần tử đạt min.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt minhash")
+    p = int(hash_params["p"])
+    hash_functions = hash_params["hash_functions"]
+    if not shingle_ids:
+        return [p] * len(hash_functions)
+    return [
+        min([(fn["a"] * x + fn["b"]) % p for x in shingle_ids])
+        for fn in hash_functions
+    ]
 
 
 def jaccard(set_a: set[str], set_b: set[str]) -> float:
@@ -203,7 +226,14 @@ def signature_similarity(
     thành tập. Báo ValueError nếu độ dài không hợp lệ.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt signature_similarity")
+    if len(sig_a) == 0 or len(sig_a) != len(sig_b):
+        raise ValueError("Hai chữ ký phải có cùng độ dài dương")
+    if empty_a and empty_b:
+        return 1.0
+    if empty_a or empty_b:
+        return 0.0
+    matches = sum(1 for a, b in zip(sig_a, sig_b) if a == b)
+    return matches / len(sig_a)
 
 
 def main() -> None:
