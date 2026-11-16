@@ -28,6 +28,7 @@ def load_graph(
     Nút cụt có danh sách đích rỗng. Không gắn cứng số đỉnh/cạnh.
     Báo ValueError nếu đồ thị rỗng hoặc cạnh chứa ID ngoài tập đỉnh.
     """
+    # TODO: Sinh viên cài đặt.
     # ---- (1) ĐỌC TẬP ĐỈNH TỪ ARTICLES.TSV ----
     article_set: set[str] = set()
     with articles_path.open(encoding="utf-8") as handle:
@@ -91,6 +92,7 @@ def pagerank(
     Trả vector mới nhất theo thứ tự ids, không trả thống kê phụ.
     Báo ValueError nếu tham số hoặc phân phối dịch chuyển không hợp lệ.
     """
+    # TODO: Sinh viên cài đặt.
     # ---- (1) KIỂM TRA ĐẦU VÀO ----
     n = len(ids)
     if n == 0 or len(out_neighbors) != n:
@@ -152,6 +154,7 @@ def topic_distribution(
     trang còn lại nhận 0. Báo ValueError nếu tập chủ đề rỗng hoặc dữ liệu
     nhãn tham chiếu ID ngoài ids. Không dùng nội dung bài để suy ra nhãn.
     """
+    # TODO: Sinh viên cài đặt.
     # ---- (1) KIỂM TRA ĐẦU VÀO ----
     n = len(ids)
     if n == 0:
@@ -207,7 +210,34 @@ def mix_pageranks(
     Báo ValueError nếu danh sách rỗng, kích thước hoặc trọng số không hợp lệ.
     """
     # TODO: Sinh viên cài đặt.
-    raise NotImplementedError("Chưa cài đặt mix_pageranks")
+    """Ghép các vector PageRank bằng tổng có trọng số theo từng tọa độ."""
+    if not topic_scores:
+        raise ValueError("Danh sách topic_scores rỗng")
+    
+    n = len(topic_scores[0])
+    if len(weights) != len(topic_scores):
+        raise ValueError("Số lượng weights không khớp với số lượng vector trong topic_scores")
+    
+    for vec in topic_scores:
+        if len(vec) != n:
+            raise ValueError("Các vector trong topic_scores không cùng độ dài")
+            
+    for w in weights:
+        if not math.isfinite(w) or w < 0:
+            raise ValueError("Trọng số không hữu hạn hoặc âm")
+            
+    if abs(sum(weights) - 1.0) > 1e-12:
+        raise ValueError("Tổng trọng số lệch 1 quá 1e-12")
+
+    # Tính tổng có trọng số theo từng tọa độ
+    mixed = [0.0] * n
+    for i in range(n):
+        s = 0.0
+        for k, vec in enumerate(topic_scores):
+            s += weights[k] * vec[i]
+        mixed[i] = s
+        
+    return mixed
 
 
 _ASCII_UPPER_TO_LOWER = str.maketrans(
@@ -287,6 +317,7 @@ def jaccard(set_a: set[str], set_b: set[str]) -> float:
     Trả kích thước giao chia kích thước hợp. Theo quy ước bài tập, hai tập
     rỗng trả 1.0; chỉ một tập rỗng trả 0.0. Không dùng tập mã băm thay thế.
     """
+    # TODO: Sinh viên cài đặt.
     # ---- (1) XỬ LÝ TRƯỜNG HỢP TẬP RỖNG ----
     if not set_a and not set_b:
         return 1.0

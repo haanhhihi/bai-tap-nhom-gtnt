@@ -1,16 +1,14 @@
 {
-  "submission": "D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py",
-  "score": 73,
+  "submission": "D:\\GTNT\\bai-tap-nhom-gtnt\\submission.py",
+  "score": 94,
   "max_score": 100,
   "criteria": [
     {
       "criterion": "A1",
       "description": "Đọc đồ thị",
-      "score": 0,
+      "score": 5,
       "max_score": 5,
-      "passed": false,
-      "error": "NotImplementedError: Chưa cài đặt load_graph",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 553, in main\n    TESTS[args.worker](module,args)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 246, in test_a1\n    names, out = s.load_graph(a, e)\n                 ~~~~~~~~~~~~^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 32, in load_graph\n    raise NotImplementedError(\"Chưa cài đặt load_graph\")\nNotImplementedError: Chưa cài đặt load_graph\n"
+      "passed": true
     },
     {
       "criterion": "A2",
@@ -36,11 +34,9 @@
     {
       "criterion": "B1",
       "description": "Tập chủ đề và phân phối dịch chuyển",
-      "score": 0,
+      "score": 6,
       "max_score": 6,
-      "passed": false,
-      "error": "NotImplementedError: Chưa cài đặt topic_distribution",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 553, in main\n    TESTS[args.worker](module,args)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 304, in test_b1\n    vector(s.topic_distribution(list(\"ABCD\"), path, \"subject.Science\"), [.5,0,.5,0], 1e-12)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 117, in topic_distribution\n    raise NotImplementedError(\"Chưa cài đặt topic_distribution\")\nNotImplementedError: Chưa cài đặt topic_distribution\n"
+      "passed": true
     },
     {
       "criterion": "B2",
@@ -59,11 +55,9 @@
     {
       "criterion": "B4",
       "description": "Ghép các vector chủ đề",
-      "score": 0,
+      "score": 5,
       "max_score": 5,
-      "passed": false,
-      "error": "NotImplementedError: Chưa cài đặt mix_pageranks",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 553, in main\n    TESTS[args.worker](module,args)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 339, in test_b4\n    vector(s.mix_pageranks(rs,weights), dense_solution(out,.85,mixed_v))\n           ~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 133, in mix_pageranks\n    raise NotImplementedError(\"Chưa cài đặt mix_pageranks\")\nNotImplementedError: Chưa cài đặt mix_pageranks\n"
+      "passed": true
     },
     {
       "criterion": "C1",
@@ -85,8 +79,7 @@
       "score": 0,
       "max_score": 6,
       "passed": false,
-      "error": "NotImplementedError: Chưa cài đặt jaccard",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 553, in main\n    TESTS[args.worker](module,args)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 382, in test_c3\n    close(s.jaccard(a,b),expected)\n          ~~~~~~~~~^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 214, in jaccard\n    raise NotImplementedError(\"Chưa cài đặt jaccard\")\nNotImplementedError: Chưa cài đặt jaccard\n"
+      "error": "TimeoutError: Vượt 300 giây"
     },
     {
       "criterion": "C4",
@@ -98,14 +91,12 @@
     {
       "criterion": "IO",
       "description": "Chạy main, bốn CSV và tính tái lập",
-      "score": 0,
+      "score": 5,
       "max_score": 5,
-      "passed": false,
-      "error": "AssertionError: Tiến trình thoát mã 1: Traceback (most recent call last):\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 352, in <module>\r\n    main()\r\n    ~~~~^^\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 272, in main\r\n    ids, out_neighbors = load_graph(\r\n                         ~~~~~~~~~~^\r\n        graph_dir / \"articles.tsv\", graph_dir / \"links.tsv\"\r\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n    )\r\n    ^\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 32, in load_graph\r\n    raise NotImplementedError(\"Ch\\u01b0a c�i \\u0111\\u1eb7t load_graph\")\r\nNotImplementedError: Ch\\u01b0a c�i \\u0111\\u1eb7t load_graph\r\n",
-      "traceback": "Traceback (most recent call last):\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 553, in main\n    TESTS[args.worker](module,args)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 489, in test_io\n    run_process([sys.executable,str(ctx.submission),'--data-dir',str(data),\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        '--hash-params',str(ctx.hash_params),'--pairs',str(pair_path),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        '--output-dir',str(target),'--beta',str(beta),'--tol','1e-12',\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        '--max-iter','1000'],ctx.timeout,cwd=root,new_session=False)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 446, in run_process\n    require(proc.returncode==0, f\"Tiến trình thoát mã {proc.returncode}: {message[-2000:]}\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\autograder.py\", line 47, in require\n    raise AssertionError(message)\nAssertionError: Tiến trình thoát mã 1: Traceback (most recent call last):\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 352, in <module>\r\n    main()\r\n    ~~~~^^\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 272, in main\r\n    ids, out_neighbors = load_graph(\r\n                         ~~~~~~~~~~^\r\n        graph_dir / \"articles.tsv\", graph_dir / \"links.tsv\"\r\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n    )\r\n    ^\r\n  File \"D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\assignment\\submission.py\", line 32, in load_graph\r\n    raise NotImplementedError(\"Ch\\u01b0a c�i \\u0111\\u1eb7t load_graph\")\r\nNotImplementedError: Ch\\u01b0a c�i \\u0111\\u1eb7t load_graph\r\n\n"
+      "passed": true
     }
   ],
-  "pairs_file": "D:\\GTNTTKHDL\\wikispeedia-student-package\\wikispeedia-student-package\\data\\pairs.csv",
+  "pairs_file": "D:\\GTNT\\bai-tap-nhom-gtnt\\data\\pairs.csv",
   "pairs_count": 100,
   "coverage": "PageRank toàn bộ Wikispeedia; MinHash 6 bài lấy mẫu tất định và fixture; độ tương đồng trên mọi cặp chính thức; main chạy hai lần trên dữ liệu nhỏ."
 }
