@@ -1,6 +1,6 @@
 {
-  "submission": "D:\\GTNT\\bai-tap-nhom-gtnt\\submission.py",
-  "score": 94,
+  "submission": "C:\\Users\\Admin\\bai-tap-nhom-gtnt\\submission.py",
+  "score": 100,
   "max_score": 100,
   "criteria": [
     {
@@ -76,10 +76,9 @@
     {
       "criterion": "C3",
       "description": "Jaccard và tương đồng chữ ký",
-      "score": 0,
+      "score": 6,
       "max_score": 6,
-      "passed": false,
-      "error": "TimeoutError: Vượt 300 giây"
+      "passed": true
     },
     {
       "criterion": "C4",
@@ -96,7 +95,7 @@
       "passed": true
     }
   ],
-  "pairs_file": "D:\\GTNT\\bai-tap-nhom-gtnt\\data\\pairs.csv",
+  "pairs_file": "C:\\Users\\Admin\\bai-tap-nhom-gtnt\\data\\pairs.csv",
   "pairs_count": 100,
   "coverage": "PageRank toàn bộ Wikispeedia; MinHash 6 bài lấy mẫu tất định và fixture; độ tương đồng trên mọi cặp chính thức; main chạy hai lần trên dữ liệu nhỏ."
 }
