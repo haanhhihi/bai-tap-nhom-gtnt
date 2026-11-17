@@ -318,15 +318,17 @@ def jaccard(set_a: set[str], set_b: set[str]) -> float:
     rỗng trả 1.0; chỉ một tập rỗng trả 0.0. Không dùng tập mã băm thay thế.
     """
     # TODO: Sinh viên cài đặt.
-    # ---- (1) XỬ LÝ TRƯỜNG HỢP TẬP RỖNG ----
     if not set_a and not set_b:
         return 1.0
     if not set_a or not set_b:
         return 0.0
 
-    # ---- (2) TÍNH TỶ LỆ GIAO TRÊN HỢP ----
-    intersection_size = len(set_a & set_b)
-    union_size = len(set_a | set_b)
+    # Luôn duyệt trên tập có kích thước nhỏ hơn để tối ưu tốc độ
+    if len(set_a) > len(set_b):
+        set_a, set_b = set_b, set_a
+
+    intersection_size = sum(1 for x in set_a if x in set_b)
+    union_size = len(set_a) + len(set_b) - intersection_size
     return intersection_size / union_size
 
 
